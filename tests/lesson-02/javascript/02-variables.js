@@ -5,5 +5,6 @@ console.log(className + " Has " + studentName);
 className = "Autotest";
 studentName = "Mien";
 console.log(className + " Has " + studentName);
+console.log(`ten cua toi la: ${className} and ${studentName}`);
 
 
