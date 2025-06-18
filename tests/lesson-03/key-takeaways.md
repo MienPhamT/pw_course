@@ -1,4 +1,4 @@
-# Key Takeaway - Lesson 2
+# Key Takeaway - Lesson 3
 
 ## I. GIT
 
