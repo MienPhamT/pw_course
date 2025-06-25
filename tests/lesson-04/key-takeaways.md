@@ -63,7 +63,7 @@
 | `child::`             | Chọn các node **con trực tiếp**                                         |
 | `ancestor::`          | Chọn tất cả node tổ tiên (gồm cả cha, ông...)                           |
 | `descendant::`        | Chọn tất cả **con cháu** (không giới hạn cấp)                           |
-| `following::`         | Chọn tất cả node **sau** node hiện tại (không giới hạn cấp) (Không bao gồm các anh em cùng cha)         |
+| `following::`         | Chọn tất cả node **sau** node hiện tại (không giới hạn cấp) (Không bao gồm node con)
 | `preceding::`         | Chọn tất cả node **trước** node hiện tại (không giới hạn cấp) (trừ các node tổ tiên)          |
 | `following-sibling::` | Chọn các node **ngang cấp phía sau** node hiện tại                      |
 | `preceding-sibling::` | Chọn các node **ngang cấp phía trước** node hiện tại                    |
