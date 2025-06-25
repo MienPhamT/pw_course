@@ -38,4 +38,7 @@ test("Bài học 4 - Personal notes", async ({ page }) => {
       await page.locator('//button[@id = "add-note"]').click();
     }
   });
+  // Search random title
+  const rd = Math.floor(Math.random() * 10);
+  await page.locator('//input[@id = "search"]').fill(titles[rd]);
 });
