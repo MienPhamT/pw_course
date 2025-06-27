@@ -1,0 +1,189 @@
+2. Liệt kê các commit và các file theo từng vùng ở các branch: main, feature-A, feature-B 
+sau khi thao tác các lệnh sau:
+
+a. Tạo thư mục lesson-8
+- branch: main
+    - Các commit:empty
+    - File theo từng vùng:
+        - Vùng working dir: empty
+        - Vùng staging: empty
+        - Vùng repository: empty
+
+b. Tạo file: file1, file2, file3
+- branch: main
+    - Các commit:empty
+    - File theo từng vùng:
+        - Vùng working dir: empty
+        - Vùng staging: empty
+        - Vùng repository: empty
+
+c. Chạy lệnh: git init
+- branch: main
+    - Các commit: empty
+    - File theo từng vùng:
+        - Vùng working dir: file1, file2, file3
+        - Vùng staging: empty
+        - Vùng repository: empty
+
+d. Chạy lệnh: git add file1
+- branch: main
+    - Các commit: empty
+    - File theo từng vùng:
+        - Vùng working dir: file1, file2, file3
+        - Vùng staging: file1
+        - Vùng repository: empty
+
+e. Chạy lệnh: git commit -m "init project"
+- branch: main
+    - Các commit: 
+        - "init project"
+    - File theo từng vùng:
+        - Vùng working dir: file1, file2, file3
+        - Vùng staging: empty
+        - Vùng repository: file1
+
+f. Chạy lệnh: git checkout -b feat/feature-A
+- branch: main
+    - Các commit: 
+        - "init project"
+    - File theo từng vùng:
+        - Vùng working dir: file1, file2, file3
+        - Vùng staging: empty
+        - Vùng repository: file1 
+
+- branch: feat/feature-A
+    - Các commit: 
+        - "init project"
+    - File theo từng vùng:
+        - Vùng working dir: file1, file2, file3
+        - Vùng staging: empty
+        - Vùng repository: file1 
+g. Chạy lệnh: git add file2
+- branch: main
+    - Các commit: 
+        - "init project"
+    - File theo từng vùng:
+        - Vùng working dir: file1, file2, file3
+        - Vùng staging: empty
+        - Vùng repository: file1 
+
+- branch: feat/feature-A
+    - Các commit: 
+        - "init project"
+    - File theo từng vùng:
+        - Vùng working dir: file1, file2, file3
+        - Vùng staging: file2
+        - Vùng repository: file1 
+
+
+h. Chạy lệnh: git commit -m "feat: add file2"
+- branch: main
+    - Các commit: 
+        - "init project"
+    - File theo từng vùng:
+        - Vùng working dir: file1, file2, file3
+        - Vùng staging: empty
+        - Vùng repository: file1 
+
+- branch: feat/feature-A
+    - Các commit: 
+        - "init project"
+        - feat: add file2
+    - File theo từng vùng:
+        - Vùng working dir: file1, file2, file3
+        - Vùng staging: empty
+        - Vùng repository: file1, file2 
+
+i. Chạy lệnh: git add file3
+- branch: main
+    - Các commit: 
+        - "init project"
+    - File theo từng vùng:
+        - Vùng working dir: file1, file2, file3
+        - Vùng staging: empty
+        - Vùng repository: file1 
+
+- branch: feat/feature-A
+    - Các commit: 
+        - "init project"
+        - feat: add file2
+    - File theo từng vùng:
+        - Vùng working dir: file1, file2, file3
+        - Vùng staging: file3
+        - Vùng repository: file1, file2 
+
+j. Chạy lệnh: git commit -m "feat: add file3"
+- branch: main
+    - Các commit: 
+        - "init project"
+    - File theo từng vùng:
+        - Vùng working dir: file1, file2, file3
+        - Vùng staging: empty
+        - Vùng repository: file1
+
+- branch: feat/feature-A
+    - Các commit: 
+        - "init project"
+        - feat: add file2
+        - feat: add file3
+    - File theo từng vùng:
+        - Vùng working dir: file1, file2, file3
+        - Vùng staging: empty
+        - Vùng repository: file1, file2, file3
+
+k. Chạy lệnh: git checkout -b feat/feature-B
+- branch: main
+    - Các commit: 
+        - "init project"
+    - File theo từng vùng:
+        - Vùng working dir: file1, file2, file3
+        - Vùng staging: empty
+        - Vùng repository: file1 
+
+- branch: feat/feature-A
+    - Các commit: 
+        - "init project"
+        - feat: add file2
+        - feat: add file3
+    - File theo từng vùng:
+        - Vùng working dir: file1, file2, file3
+        - Vùng staging: empty
+        - Vùng repository: file1, file2, file3
+
+- branch: feat/feature-B
+    - Các commit:
+        - "init project"
+        - feat: add file2
+        - feat: add file3
+    - File theo từng vùng:
+        - Vùng working dir: file1, file2, file3
+        - Vùng staging: empty
+        - Vùng repository: file1, file2, file3
+
+l. Chạy lệnh: git reset HEAD~2
+- branch: main
+    - Các commit: 
+        - "init project"
+    - File theo từng vùng:
+        - Vùng working dir: file1, file2, file3
+        - Vùng staging: empty
+        - Vùng repository: file1 
+
+- branch: feat/feature-A
+    - Các commit: 
+        - "init project"
+        - feat: add file2
+        - feat: add file3
+    - File theo từng vùng:
+        - Vùng working dir: file1, file2, file3
+        - Vùng staging: empty
+        - Vùng repository: file1, file2, file3
+
+- branch: feat/feature-B
+    - Các commit:
+        - "init project"
+    - File theo từng vùng:
+        - Vùng working dir: file1, file2, file3
+        - Vùng staging: empty
+        - Vùng repository: file1
+
