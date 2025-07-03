@@ -1,56 +1,52 @@
 import test, { expect } from "@playwright/test";
+import { LoginPage } from "../../../practice-playwrightvn-pages/login-page";
+import { MediaPage } from "../../../practice-playwrightvn-pages/media-page";
 
 test.describe("MEDIA - media", async () => {
     const loginUrl = "https://pw-practice-dev.playwrightvn.com/login";
     const validUsername = "p103-mien";
     const validPassword = "ID9Zz)a0kKq#39LB#8so)(YN";
-    const filePath = "tests/lesson-05/playwright-exercises/mia.txt";
 
-    const $usernameInput = "//input[@id = 'user_login']";
-    const $passwordInput = "//input[@id = 'user_pass']";
-    const $loginButton = "//input[@id = 'wp-submit']";
-    const $mediaMenuItem = "//a/div[text() = 'Media']";
-    const $addMediaBtn = "//a[@role = 'button' and text() = 'Add Media File']";
-    const $fileInput = 'input[type="file"]';
-    const $firstFileinList = '(//ul[contains(@class, "attachments")]//li)[1]'
-    const $uploadedFile = "//div[@class='filename']/div[text()='mia.txt']";
-    const $deleteButton = "//button[@class = 'button-link delete-attachment']";
+    const xpathMediaMenuItem = "//a/div[text() = 'Media']";
+    const xpathUploadedFile = "//div[@class='filename']/div[text()='mia.txt']//ancestor::li";
+
+    let loginPage: LoginPage;
+    let mediaPage: MediaPage;
 
     test.beforeEach(async ({ page }) => {
-        await page.goto(loginUrl);
-        await page.locator($usernameInput).fill(validUsername);
-        await page.locator($passwordInput).fill(validPassword);
-        await page.locator($loginButton).click();
+        loginPage = new LoginPage(loginUrl, page);
+        mediaPage = new MediaPage(page);
 
-        await page.locator($mediaMenuItem).click();
+        await loginPage.loginToSite(validUsername, validPassword);
+        await mediaPage.goToPage(xpathMediaMenuItem);
     })
 
     test("@MEDIA_FILES_001 - Media - upload file success", async ({ page }) => {
         await test.step("Upload file", async () => {
-            await page.locator($addMediaBtn).click();
-            await page.locator($fileInput).setInputFiles(filePath);
+            await mediaPage.clickAddMediaFileBtn();
+            await mediaPage.setFileInput();
 
-            const file = page.locator($uploadedFile);
+            const file = await mediaPage.getLocator(xpathUploadedFile);
             await expect(file).toBeVisible();
         });
 
         await test.step("Refresh page", async () => {
-            await page.reload();
+            await mediaPage.refreshPage();
 
-            const file = page.locator($uploadedFile);
+            const file = await mediaPage.getLocator(xpathUploadedFile);
             await expect(file).toBeVisible();
         });
 
         await test.step("Delete file", async () => {
-            await page.locator($firstFileinList).click();
+            await mediaPage.clickToNewUploadFile(xpathUploadedFile);
 
             page.on("dialog", async (dialog) => {
                 await dialog.accept();
             });
 
-            await page.locator($deleteButton).click();
+            await mediaPage.deleteFile();
 
-            const file = page.locator($uploadedFile);
+            const file = page.locator(xpathUploadedFile);
             await expect(file).not.toBeVisible();
         });
     });
