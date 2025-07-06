@@ -1,7 +1,6 @@
-import { Page } from "@playwright/test";
-import { BasePage } from "./base-page";
-
-export class RegisterPage extends BasePage {
+import { Locator, Page } from "@playwright/test";
+export class RegisterPage {
+  page: Page;
   xpathUsername = "//input[@id = 'username']";
   xpathEmail = '//input[@id = "email"]';
   xpathGenderMale = '//input[@id = "male"]';
@@ -17,66 +16,79 @@ export class RegisterPage extends BasePage {
   xpathEnableFeature = '//label[@class="switch"]';
   xpathCustomDate = '//input[@id="customDate"]';
   xpathSubmitBtn = '//button[@type = "submit"]';
+  xpathRegisterInfo = '//td[4]'; // chua toi uu
+
+  xpathCredential = (name: string) => {
+    return `//td[text() = '${name}']`
+  };
 
   constructor(page: Page) {
-    super(page);
+    this.page = page;
   }
 
   async fillUsername(username: string): Promise<void> {
-    await this.fillValue(this.xpathUsername, username);
+    await this.page.locator(this.xpathUsername).fill(username);
   }
 
   async fillEmail(email: string): Promise<void> {
-    await this.fillValue(this.xpathEmail, email);
+    await this.page.locator(this.xpathEmail).fill(email);
   }
 
   async checkGender(): Promise<void> {
-    await this.checkValue(this.xpathGenderMale);
+    await this.page.locator(this.xpathGenderMale).check();
   }
 
   async checkHobby(): Promise<void> {
-    await this.checkValue(this.xpathHobbyReading);
+    await this.page.locator(this.xpathHobbyReading).check();
   }
 
   async selectInterest(interest: string): Promise<void> {
-    await this.selectOption(this.xpathInterest, interest);
+    await this.page.selectOption(this.xpathInterest, interest);
   }
 
   async selectCountry(country: string): Promise<void> {
-    await this.selectOption(this.xpathCountry, country);
+    await this.page.selectOption(this.xpathCountry, country);
   }
 
   async fillDob(dob: string): Promise<void> {
-    await this.fillValue(this.xpathDob, dob);
+    await this.page.locator(this.xpathDob).fill(dob);
   }
 
   async setProfilePicture(filePath: string): Promise<void> {
-    await this.setFileInput(this.xpathProfile, filePath);
+    await this.page.locator(this.xpathProfile).setInputFiles(filePath);
   }
 
   async fillBio(biography: string): Promise<void> {
-    await this.fillValue(this.xpathBio, biography);
+    await this.page.locator(this.xpathBio).fill(biography);
   }
 
   async fillRating(rate: string): Promise<void> {
-    await this.fillValue(this.xpathRating, rate);
+    await this.page.locator(this.xpathRating).fill(rate);
   }
 
   async checkNewsletter() {
-    await this.hoverElement(this.xpathTooltip);
-    await this.checkValue(this.xpathNewsletter);
+    await this.page.locator(this.xpathTooltip).hover();
+    await this.page.locator(this.xpathNewsletter).check();
   }
 
   async clickEnableFeature(): Promise<void> {
-    await this.clickAt(this.xpathEnableFeature);
+    await this.page.locator(this.xpathEnableFeature).click();
   }
 
   async fillCustomDate(value: string): Promise<void> {
-    await this.fillValue(this.xpathCustomDate, value);
+    await this.page.locator(this.xpathCustomDate).fill(value);
   }
 
   async clickBtnSubmit(): Promise<void> {
-    await this.clickAt(this.xpathSubmitBtn);
+    await this.page.locator(this.xpathSubmitBtn).click();
+  }
+
+  async getLocator(text: string): Promise<Locator> {
+    return await this.page.locator(this.xpathCredential(text));
+  }
+
+  async getRegisterInfo(): Promise<string | null> {
+    return await this.page.locator(this.xpathRegisterInfo).textContent();
   }
 
   parseTextContentToObject(text: string): Record<string, string> {
@@ -96,7 +108,6 @@ export class RegisterPage extends BasePage {
 
       result[key] = value;
     }
-
     return result;
   }
 }

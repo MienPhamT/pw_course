@@ -4,36 +4,27 @@ import { ProductPage } from "../../../marterial-playwright-pages/product-page";
 
 test("Product page: Add items to Cart", async ({ page }) => {
   const url = "https://material.playwrightvn.com/";
-  const xpathProdPage = '//a[contains(@href, "product-page")]';
-  const xpathTotalPrice = '//td[@class="total-price"]';
-
-  function xpathItem(item: number) {
-    return `//button[@data-product-id=${item}]`;
-  }
 
   let homePage = new HomePage(url, page);
   let prodPage = new ProductPage(page);
 
   await test.step("Go to website", async () => {
-    await homePage.goToTheWebsite(url);
+    await homePage.goToWebsite(url);
   });
 
   await test.step("Click Bai Hoc 2", async () => {
-    await homePage.openPage(xpathProdPage);
+    await homePage.openLessonPage("product-page");
   });
 
   await test.step("Add Products to cart", async () => {
-    await prodPage.dbClick(xpathItem(1));
-    await prodPage.clickCount(xpathItem(2), 3);
-    await prodPage.clickAt(xpathItem(3));
+    await prodPage.addItemToCart(1, 2)
+    await prodPage.addItemToCart(2, 3)
+    await prodPage.addItemToCart(3, 1);
 
     for (let i = 1; i <= 3; i++) {
       let productName = "Product " + i;
-      let expectProduct = await prodPage.getLocator(
-        `//td[text() = '${productName}']`
-      );
-      await expect(expectProduct).toBeVisible();
+      await expect(await prodPage.getProductLocator(productName)).toBeVisible();
     }
-    expect(await prodPage.getTextContent(xpathTotalPrice)).toBe("$110.00");
+    expect(await prodPage.getTotalPrice()).toBe("$110.00");
   });
 });

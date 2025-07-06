@@ -1,12 +1,10 @@
 import test, { expect } from "@playwright/test";
 import { HomePage } from "../../../marterial-playwright-pages/home-page";
 import { RegisterPage } from "../../../marterial-playwright-pages/register-page";
-
+import { get } from "http";
 
 test("User Registration", async ({ page }) => {
   let url = "https://material.playwrightvn.com/";
-  let xpathRegisterPage = '//a[contains(@href,  "register-page")]';
-
   let registerPage = new RegisterPage(page);
   let homePage = new HomePage(url, page);
 
@@ -21,11 +19,11 @@ test("User Registration", async ({ page }) => {
   const customDate = "2020-04-12";
 
   await test.step("Go to Website", async () => {
-    await homePage.goToTheWebsite(url);
+    await homePage.goToWebsite(url);
   });
 
   await test.step("Click Bai Hoc 1", async () => {
-    await homePage.openPage(xpathRegisterPage);
+    await homePage.openLessonPage("register-page");
   });
 
   await test.step("Fill User Registration form", async () => {
@@ -46,17 +44,10 @@ test("User Registration", async ({ page }) => {
   await test.step("Click Register User button", async () => {
     await registerPage.clickBtnSubmit();
 
-    await expect(
-      await registerPage.getLocator(`//td[text() = '${username}']`)
-    ).toBeVisible();
+    await expect(await registerPage.getLocator(username)).toBeVisible();
+    await expect(await registerPage.getLocator(email)).toBeVisible();
 
-    await expect(
-      await registerPage.getLocator(`//td[text() = '${email}']`)
-    ).toBeVisible();
-
-    const info = await registerPage.getTextContent(
-      `//td[text() = '${email}']/following-sibling::td[contains(., 'Gender')]`
-    );
+    const info = await registerPage.getRegisterInfo();
     const formData = registerPage.parseTextContentToObject(info || "");
 
     const expectedData = {
@@ -76,4 +67,4 @@ test("User Registration", async ({ page }) => {
       expect(formData[key]).toBe(expectedData[key]);
     }
   });
-});
+}); 

@@ -7,7 +7,6 @@ test.describe("POST - post", async () => {
   let loginPage: LoginPage;
   let postPage: PostPage;
 
-  const loginUrl = "https://pw-practice-dev.playwrightvn.com/login";
   const validUsername = "p103-mien";
   const validPassword = "ID9Zz)a0kKq#39LB#8so)(YN";
   const expectErrorBlankTagName = "A name is required for this term.";
@@ -16,13 +15,12 @@ test.describe("POST - post", async () => {
   const specialTagSlug = "Đây là tag đặc biệt @100 $200 mia";
 
   test.beforeEach(async ({ page }) => {
-    loginPage = new LoginPage(loginUrl, page);
+    loginPage = new LoginPage(page);
     postPage = new PostPage(page);
 
-    await loginPage.loginToSite(validUsername, validPassword);
-
-    await postPage.clickPostMenu();
-    await postPage.clickTagSubItem();
+    await loginPage.goToWebsite();
+    await loginPage.login(validUsername, validPassword);
+    await loginPage.navigateToMenuItem(postPage.xpathPostMenu, postPage.xpathTagsSubItem);
 
     page.on("dialog", async (dialog) => {
       await dialog.accept();
@@ -50,8 +48,8 @@ test.describe("POST - post", async () => {
 
       await postPage.clickAddTagBtn();
 
-      await expect(await postPage.getResultMsgLocator()).not.toHaveText(expectErrorBlankTagName);
-      await expect(await postPage.getResultMsgLocator()).toHaveText(expectErrorDuplicateExistTagName);
+      await expect(postPage.getXpath()).not.toHaveText(expectErrorBlankTagName);
+      await expect(postPage.getXpath()).toHaveText(expectErrorDuplicateExistTagName);
     });
   });
 
@@ -60,10 +58,10 @@ test.describe("POST - post", async () => {
       await postPage.fillTagName(`tag ${validUsername} 01`);
       await postPage.clickAddTagBtn();
 
-      await expect(await postPage.getResultMsgLocator()).not.toHaveText(expectErrorDuplicateExistTagName);
-      await expect(await postPage.getResultMsgLocator()).toHaveText("Tag added.");
+      await expect(postPage.getXpath()).not.toHaveText(expectErrorDuplicateExistTagName);
+      await expect(postPage.getXpath()).toHaveText("Tag added.");
 
-      await expect(await postPage.getTagNameLocator(`tag ${validUsername} 01`)).toBeVisible({ timeout: 10000 });
+      await expect(postPage.getXpath(`tag ${validUsername} 01`)).toBeVisible({ timeout: 10000 });
     });
 
     await test.step("Add tag with valid name, slug", async () => {
@@ -74,8 +72,8 @@ test.describe("POST - post", async () => {
       const msg = await postPage.getResultMsg();
       expect(msg).toBe("Tag added.");
 
-      await expect(await postPage.getTagNameLocator(`tag ${validUsername} 02`)).toBeVisible({ timeout: 10000 });
-      await expect(await postPage.getSlugNameLocator(`tag ${validUsername} 02`, `tag-${validUsername}-02`)).toBeVisible({ timeout: 15000 });
+      await expect(postPage.getXpath(`tag ${validUsername} 02`)).toBeVisible({ timeout: 10000 });
+      await expect(postPage.getXpath(`tag ${validUsername} 02`, `tag-${validUsername}-02`)).toBeVisible({ timeout: 15000 });
     });
 
     tagNameList = [
@@ -93,10 +91,10 @@ test.describe("POST - post", async () => {
       const msg = await postPage.getResultMsg();
       expect(msg).toBe("Tag added.");
 
-      await expect(await postPage.getTagNameLocator(`tag ${validUsername} 03`)).toBeVisible();
+      await expect(postPage.getXpath(`tag ${validUsername} 03`)).toBeVisible();
 
       const expectedSpecialSlug = postPage.slugify(specialTagSlug);
-      await expect(await postPage.getSlugNameLocator(`tag ${validUsername} 03`, expectedSpecialSlug)).toBeVisible();
+      await expect(postPage.getXpath(`tag ${validUsername} 03`, expectedSpecialSlug)).toBeVisible();
     });
     tagNameList = [
       `tag ${validUsername} 03`,
@@ -116,10 +114,10 @@ test.describe("POST - post", async () => {
       const msg = await postPage.getResultMsg();
       expect(msg).toBe("Category added.");
 
-      await expect(await postPage.getCategoryNameLocator(`Category ${validUsername} 01`)).toBeVisible();
+      await expect(postPage.getXpath(undefined, undefined, `Category ${validUsername} 01`)).toBeVisible();
 
       const expectCatSpecialSlug = postPage.slugify(specialCategorySlug);
-      await expect(await postPage.getCategorySlugLocator(`Category ${validUsername} 01`, expectCatSpecialSlug)).toBeVisible();
+      await expect(postPage.getXpath(undefined, undefined, `Category ${validUsername} 01`, expectCatSpecialSlug)).toBeVisible();
     });
 
     await test.step("Add Category with Parent", async () => {
@@ -131,10 +129,10 @@ test.describe("POST - post", async () => {
       expect(msg).toBe("Category added.");
 
 
-      await expect(await postPage.getCategoryNameLocator(`Category ${validUsername} 02`)).toBeVisible();
+      await expect(postPage.getXpath(`Category ${validUsername} 02`)).toBeVisible();
 
       const expectedSlug = postPage.slugify(`Category ${validUsername} 02`);
-      await expect(await postPage.getCategorySlugLocator(`Category ${validUsername} 02`, expectedSlug)).toBeVisible();
+      await expect(postPage.getXpath(undefined, undefined, `Category ${validUsername} 02`, expectedSlug)).toBeVisible();
     });
 
     tagNameList = [
