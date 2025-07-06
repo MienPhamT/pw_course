@@ -1,9 +1,7 @@
 import { expect, test } from "@playwright/test";
-import { assert } from "console";
 import { LoginPage } from "../../../practice-playwrightvn-pages/login-page";
 
 test.describe("AUTH - Authentication", async () => {
-    const loginUrl = "https://pw-practice-dev.playwrightvn.com/login";
     const incorrectUsername = "miamiaa";
     const incorrectPassword = "123456";
     const validUsername = "p103-mien";
@@ -12,15 +10,10 @@ test.describe("AUTH - Authentication", async () => {
     const expectErrorMsg = `Error: The username ${incorrectUsername} is not registered on this site. If you are unsure of your username, try your email address instead.`;
     const expectDashboardUrl = "https://pw-practice-dev.playwrightvn.com/wp-admin/";
 
-    let xpathHeadingDashboard = "//div[@class = 'wrap']/h1";
-    let xpathHeadingAtaGlance = "//h2[normalize-space() = 'At a Glance']";
-    let xpathHeadingActivity = "//h2[normalize-space() = 'Activity']";
-    let xpathLoginErrorMsg = "//div[@id = 'login_error']/p";
-
     let loginPage: LoginPage;
 
     test.beforeEach(async ({ page }) => {
-        loginPage = new LoginPage(loginUrl, page)
+        loginPage = new LoginPage(page);
         await loginPage.goToWebsite();
     });
 
@@ -29,20 +22,19 @@ test.describe("AUTH - Authentication", async () => {
             await loginPage.fillUserName(incorrectUsername);
             await loginPage.fillPassword(incorrectPassword);
 
-            const actualUsername = await loginPage.getInputValue(loginPage.xpathUsernameInput);
-            expect(actualUsername).toBe(incorrectUsername);
+            const actualUsername = await loginPage.getCurrentUsername();
+            const actualPW = await loginPage.getCurrentPassword();
 
-            const actualPW = await loginPage.getInputValue(loginPage.xpathPasswordInput);
+            expect(actualUsername).toBe(incorrectUsername);
             expect(actualPW).toBe(incorrectPassword);
         });
 
         await test.step("Click button login", async () => {
             await loginPage.clickBtnLogin();
 
-            const actualErrorMsg = await loginPage.getTextContent(xpathLoginErrorMsg);
+            const actualErrorMsg = await loginPage.getLoginErrorMsg();
             expect(expectErrorMsg).toBe(actualErrorMsg);
         });
-
     });
 
     test("@AUTH_002 - Login success", async ({ page }) => {
@@ -50,10 +42,10 @@ test.describe("AUTH - Authentication", async () => {
             await loginPage.fillUserName(validUsername);
             await loginPage.fillPassword(validPassword);
 
-            const actualUsername = await loginPage.getInputValue(loginPage.xpathUsernameInput);
-            expect(actualUsername).toBe(validUsername);
+            const actualUsername = await loginPage.getCurrentUsername();
+            const actualPW = await loginPage.getCurrentPassword();
 
-            const actualPW = await loginPage.getInputValue(loginPage.xpathPasswordInput);
+            expect(actualUsername).toBe(validUsername);
             expect(actualPW).toBe(validPassword);
         });
 
@@ -63,9 +55,9 @@ test.describe("AUTH - Authentication", async () => {
             const currentUrl = await loginPage.getUrl();
             expect(currentUrl).toBe(expectDashboardUrl);
 
-            await expect(await loginPage.getLocator(xpathHeadingDashboard)).toBeVisible();
-            await expect(await loginPage.getLocator(xpathHeadingAtaGlance)).toBeVisible();
-            await expect(await loginPage.getLocator(xpathHeadingActivity)).toBeVisible();
+            await expect(loginPage.getDashboardHeadingLocator()).toBeVisible();
+            await expect(loginPage.getAtAGlanceLocator()).toBeVisible();
+            await expect(loginPage.getActivityLocator()).toBeVisible();
         });
     });
 });

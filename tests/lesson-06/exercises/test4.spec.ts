@@ -3,14 +3,8 @@ import { HomePage } from "../../../marterial-playwright-pages/home-page";
 import { PersonalNotePage } from "../../../marterial-playwright-pages/personal-note-page";
 
 test("Bài học 4 - Personal notes", async ({ page }) => {
-
   const url = "https://material.playwrightvn.com/";
   const vnexpressUrl = "https://vnexpress.net/khoa-hoc";
-  const xpathPersonalNotePage = '//a[contains(@href,  "personal-notes")]'
-  const xpathTitleNews = '//h4[@class="title-news"]/child::a';
-  const xpathDescription = '//p[@class="description"]/child::a';
-  const xpathTitleNote = '//ul[@id = "notes-list"]//strong';
-  const xpathContentNote = '//ul[@id = "notes-list"]//p';
 
   const titles: string[] = [];
   const descriptions: string[] = [];
@@ -18,12 +12,11 @@ test("Bài học 4 - Personal notes", async ({ page }) => {
   let homePage = new HomePage(url, page);
   let personalPage = new PersonalNotePage(page);
 
-
   await test.step("Get articles from VNExpress", async () => {
     await page.goto(vnexpressUrl);
 
-    const titleElements = await personalPage.getLocator(xpathTitleNews);
-    const descriptionElements = await personalPage.getLocator(xpathDescription);
+    const titleElements = await personalPage.getTitleNewsLocator();
+    const descriptionElements = await personalPage.getDescriptionLocator();
 
     for (let i = 0; i < 10; i++) {
       const title = await titleElements.nth(i).getAttribute("title");
@@ -37,13 +30,12 @@ test("Bài học 4 - Personal notes", async ({ page }) => {
     console.log(titles);
   });
 
-
   await test.step("Go to Playwright Website", async () => {
-    await homePage.goToTheWebsite(url);
+    await homePage.goToWebsite(url);
   });
 
   await test.step("Click Bai Hoc 4", async () => {
-    await homePage.openPage(xpathPersonalNotePage);
+    await homePage.openLessonPage("personal-notes");
   });
 
   await test.step("Add 10 notes ", async () => {
@@ -60,8 +52,8 @@ test("Bài học 4 - Personal notes", async ({ page }) => {
     const rd = Math.floor(Math.random() * 10);
     await personalPage.fillSearchkey(titles[rd]);
 
-    const noteTitles = await personalPage.getLocator(xpathTitleNote);
-    const noteContents = await personalPage.getLocator(xpathContentNote);
+    const noteTitles = await personalPage.getTitleNoteLocator();
+    const noteContents = await personalPage.getContentNoteLocator();
 
     let found = false;
     for (let i = 0; i < await noteTitles.count(); i++) {
@@ -79,5 +71,4 @@ test("Bài học 4 - Personal notes", async ({ page }) => {
     }
     expect(found).toBeTruthy();
   })
-
 });

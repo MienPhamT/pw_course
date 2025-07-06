@@ -3,42 +3,39 @@ import { LoginPage } from "../../../practice-playwrightvn-pages/login-page";
 import { MediaPage } from "../../../practice-playwrightvn-pages/media-page";
 
 test.describe("MEDIA - media", async () => {
-    const loginUrl = "https://pw-practice-dev.playwrightvn.com/login";
     const validUsername = "p103-mien";
     const validPassword = "ID9Zz)a0kKq#39LB#8so)(YN";
-
-    const xpathMediaMenuItem = "//a/div[text() = 'Media']";
-    const xpathUploadedFile = "//div[@class='filename']/div[text()='mia.txt']//ancestor::li";
 
     let loginPage: LoginPage;
     let mediaPage: MediaPage;
 
     test.beforeEach(async ({ page }) => {
-        loginPage = new LoginPage(loginUrl, page);
+        loginPage = new LoginPage(page);
         mediaPage = new MediaPage(page);
 
-        await loginPage.loginToSite(validUsername, validPassword);
-        await mediaPage.goToPage(xpathMediaMenuItem);
+        await loginPage.goToWebsite();
+        await loginPage.login(validUsername, validPassword);
+        await loginPage.navigateToMenuItem(mediaPage.xpathMediaMenuItem);
     })
 
     test("@MEDIA_FILES_001 - Media - upload file success", async ({ page }) => {
         await test.step("Upload file", async () => {
             await mediaPage.clickAddMediaFileBtn();
-            await mediaPage.setFileInput();
+            await mediaPage.uploadFile();
 
-            const file = await mediaPage.getLocator(xpathUploadedFile);
+            const file = await mediaPage.getUploadFileLocator();
             await expect(file).toBeVisible();
         });
 
         await test.step("Refresh page", async () => {
             await mediaPage.refreshPage();
 
-            const file = await mediaPage.getLocator(xpathUploadedFile);
+            const file = await mediaPage.getUploadFileLocator();
             await expect(file).toBeVisible();
         });
 
         await test.step("Delete file", async () => {
-            await mediaPage.clickToNewUploadFile(xpathUploadedFile);
+            await mediaPage.clickToNewUploadFile();
 
             page.on("dialog", async (dialog) => {
                 await dialog.accept();
@@ -46,7 +43,7 @@ test.describe("MEDIA - media", async () => {
 
             await mediaPage.deleteFile();
 
-            const file = page.locator(xpathUploadedFile);
+            const file = await mediaPage.getUploadFileLocator();
             await expect(file).not.toBeVisible();
         });
     });

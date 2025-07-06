@@ -1,19 +1,23 @@
 import { Page } from "@playwright/test";
-import { BasePage } from "./base-page";
 
-export class HomePage extends BasePage {
+export class HomePage {
   url: string;
+  page: Page;
+
+  xpathLessonPage = (lessonName: string) => {
+    return `//a[contains(@href, '${lessonName}')]`;
+  }
 
   constructor(url: string, page: Page) {
-    super(page);
     this.url = url;
+    this.page = page;
   }
 
-  async goToTheWebsite(url: string): Promise<void> {
-    await this.goToWebsite(this.url);
+  async goToWebsite(url: string): Promise<void> {
+    await this.page.goto(url);
   }
-
-  async openPage(xpath: string): Promise<void> {
-    await this.clickAt(xpath);
+ 
+  async openLessonPage(pageName: string): Promise<void> {
+    await this.page.locator(this.xpathLessonPage(pageName)).click();
   }
 }

@@ -2,7 +2,6 @@ import { Locator, Page } from "@playwright/test";
 import { BasePage } from "./base-page";
 
 export class PostPage extends BasePage {
-
     xpathPostMenu = "//div[text() = 'Posts']";
     xpathTagsSubItem = "//ul[@class = 'wp-submenu wp-submenu-wrap']/li/a[text() = 'Tags']";
     xpathCategoriesSubItem = '//a[text() = "Categories"]';
@@ -25,7 +24,7 @@ export class PostPage extends BasePage {
 
     xpathDeleteTagName = (tagName: string) => {
         return `//a[text() = '${tagName}' or text() = '— ${tagName}']/ancestor::td//span[@class = 'delete']`;
-    }
+    };
 
     xpathRowCategoryName = (catName: string) => {
         return `//a[@class='row-title' and contains(text(), '${catName}')]`;
@@ -36,8 +35,10 @@ export class PostPage extends BasePage {
     };
 
     constructor(page: Page) {
-        super(page);
+        super(page, 'https://pw-practice-dev.playwrightvn.com/login');
     }
+
+    // Post-Tags SubItem
 
     async clickPostMenu(): Promise<void> {
         await this.page.locator(this.xpathPostMenu).click();
@@ -68,18 +69,6 @@ export class PostPage extends BasePage {
         await this.page.locator(this.xpathTagSlugInput).fill(slugName);
     };
 
-    async getResultMsgLocator(): Promise<Locator> {
-        return await this.getLocator(this.xpathResultMsg);
-    }
-
-    async getTagNameLocator(tagName: string): Promise<Locator> {
-        return await this.getLocator(this.xpathRowTagName(tagName));
-    }
-
-    async getSlugNameLocator(tagName: string, slugName: string): Promise<Locator> {
-        return await this.getLocator(this.xpathRowSlugName(tagName, slugName));
-    }
-
     async hoverElement(xpath: string): Promise<void> {
         await this.page.locator(xpath).hover();
     };
@@ -87,6 +76,8 @@ export class PostPage extends BasePage {
     async deleteTag(xpath: string): Promise<void> {
         await this.page.locator(xpath).click();
     };
+
+    // Post-Category SubItem
 
     async fillCategoryName(catName: string): Promise<void> {
         await this.page.locator(this.xpathCategoryNameInput).fill(catName);
@@ -104,13 +95,22 @@ export class PostPage extends BasePage {
         await this.page.selectOption(this.xpathParentDropdown, parent);
     };
 
-    async getCategoryNameLocator(catName: string): Promise<Locator> {
-        return await this.getLocator(this.xpathRowCategoryName(catName));
-    }
+    getXpath(tagName?: string, slugName?: string, catName?: string, catSlug?: string): Locator {
+        if (tagName && slugName) {
+            return this.page.locator(this.xpathRowSlugName(tagName, slugName));
+        }
+        if (tagName) {
+            return this.page.locator(this.xpathRowTagName(tagName));
+        }
+        if (catName && catSlug) {
+            return this.page.locator(this.xpathRowCategoryName(catName));
+        }
+        if (catName) {
+            return this.page.locator(this.xpathRowCategoryName(catName));
+        }
 
-    async getCategorySlugLocator(catName: string, slugName: string): Promise<Locator> {
-        return await this.getLocator(this.xpathRowCategorySlugName(catName, slugName));
-    }
+        return this.page.locator(this.xpathResultMsg);
+    };
 
     slugify(input: string) {
         return input
