@@ -1,12 +1,12 @@
 import test, { expect } from "@playwright/test";
-import { HomePage } from "../../../marterial-playwright-pages/home-page";
-import { ProductPage } from "../../../marterial-playwright-pages/product-page";
+import { PomManager } from "../../../marterial-playwright-pages/pom-manager";
 
 test("Product page: Add items to Cart", async ({ page }) => {
   const url = "https://material.playwrightvn.com/";
 
-  let homePage = new HomePage(url, page);
-  let prodPage = new ProductPage(page);
+  let pom = new PomManager(page);
+  let homePage = pom.getHomePage(url);
+  let prodPage = pom.getProductPage();
 
   await test.step("Go to website", async () => {
     await homePage.goToWebsite(url);

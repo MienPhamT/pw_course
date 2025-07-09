@@ -7,6 +7,7 @@ test.describe("POST - post", async () => {
   let loginPage: LoginPage;
   let postPage: PostPage;
 
+  const url = "https://pw-practice-dev.playwrightvn.com/login";
   const validUsername = "p103-mien";
   const validPassword = "ID9Zz)a0kKq#39LB#8so)(YN";
   const expectErrorBlankTagName = "A name is required for this term.";
@@ -16,10 +17,8 @@ test.describe("POST - post", async () => {
 
   test.beforeEach(async ({ page }) => {
     loginPage = new LoginPage(page);
-    postPage = new PostPage(page);
-
-    await loginPage.goToWebsite();
-    await loginPage.login(validUsername, validPassword);
+    // Sử dụng loginAndGoToPost để trả về PostPage
+    postPage = await loginPage.loginAndGoToPost(validUsername, validPassword);
     await loginPage.navigateToMenuItem(postPage.xpathPostMenu, postPage.xpathTagsSubItem);
 
     page.on("dialog", async (dialog) => {

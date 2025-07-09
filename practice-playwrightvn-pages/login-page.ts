@@ -1,8 +1,8 @@
 import { Locator, Page } from "@playwright/test";
 import { BasePage } from "./base-page";
-
+import { MediaPage } from "./media-page";
+import { PostPage } from "./post-page";
 export class LoginPage extends BasePage {
-
     xpathUsernameInput = "//input[@id = 'user_login']";
     xpathPasswordInput = "//input[@id = 'user_pass']";
     xpathLoginButton = "//input[@id = 'wp-submit']";
@@ -35,6 +35,22 @@ export class LoginPage extends BasePage {
         await this.fillUserName(username);
         await this.fillPassword(password);
         await this.clickBtnLogin();
+    }
+
+    async loginAndGoToMedia(username: string, password: string): Promise<MediaPage> {
+        await this.goToWebsite();
+        await this.fillUserName(username);
+        await this.fillPassword(password);
+        await this.clickBtnLogin();
+        return new MediaPage(this.page);
+    }
+
+    async loginAndGoToPost(username: string, password: string): Promise<PostPage> {
+        await this.goToWebsite();
+        await this.fillUserName(username);
+        await this.fillPassword(password);
+        await this.clickBtnLogin();
+        return new PostPage(this.page);
     }
 
     async getLoginErrorMsg(): Promise<string | null> {

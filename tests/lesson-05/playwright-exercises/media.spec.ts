@@ -3,6 +3,7 @@ import { LoginPage } from "../../../practice-playwrightvn-pages/login-page";
 import { MediaPage } from "../../../practice-playwrightvn-pages/media-page";
 
 test.describe("MEDIA - media", async () => {
+    const url = "https://pw-practice-dev.playwrightvn.com/login"
     const validUsername = "p103-mien";
     const validPassword = "ID9Zz)a0kKq#39LB#8so)(YN";
 
@@ -11,10 +12,8 @@ test.describe("MEDIA - media", async () => {
 
     test.beforeEach(async ({ page }) => {
         loginPage = new LoginPage(page);
-        mediaPage = new MediaPage(page);
-
-        await loginPage.goToWebsite();
-        await loginPage.login(validUsername, validPassword);
+        // Sử dụng loginAndGoToMedia để trả về MediaPage
+        mediaPage = await loginPage.loginAndGoToMedia(validUsername, validPassword);
         await loginPage.navigateToMenuItem(mediaPage.xpathMediaMenuItem);
     })
 

@@ -1,12 +1,12 @@
 import test, { expect } from "@playwright/test";
-import { HomePage } from "../../../marterial-playwright-pages/home-page";
-import { RegisterPage } from "../../../marterial-playwright-pages/register-page";
-import { get } from "http";
+import { PomManager } from "../../../marterial-playwright-pages/pom-manager";
 
 test("User Registration", async ({ page }) => {
   let url = "https://material.playwrightvn.com/";
-  let registerPage = new RegisterPage(page);
-  let homePage = new HomePage(url, page);
+  let pom = new PomManager(page);
+
+  let registerPage = pom.getRegisterPage();
+  let homePage = pom.getHomePage(url);
 
   const username = "Mialala";
   const email = "mielele@gmail.com";
