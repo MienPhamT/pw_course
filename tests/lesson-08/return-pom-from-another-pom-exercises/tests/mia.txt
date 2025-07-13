@@ -1,0 +1,11 @@
+Add commentMore actions
+
+| Câu lệnh                     | Ý nghĩa                                               |
+| ---------------------------- | ----------------------------------------------------- |
+| `expect().toBe()`            | Kiểm tra giá trị đúng (===)                           |
+| `expect().toEqual()`         | So sánh sâu (object, array)                           |
+| `expect().toContain()`       | Kiểm tra phần tử có trong mảng hoặc chuỗi             |
+| `expect().toBeTruthy()`      | Kiểm tra có "truthy" (khác null, false, undefined, 0) |
+| `expect().toBeFalsy()`       | Kiểm tra có "falsy" (null, undefined, 0, false)       |
+| `expect().toBeGreaterThan()` | Kiểm tra giá trị lớn hơn                              |
+| `expect().toBeLessThan()`    | Kiểm tra giá trị nhỏ hơn                              |
