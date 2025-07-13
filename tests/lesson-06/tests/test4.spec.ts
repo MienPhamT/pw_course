@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { PomManager } from "../../../marterial-playwright-pages/pom-manager";
+import { HomePage } from "../pages/home-page";
+import { PersonalNotePage } from "../pages/personal-note-page";
 
 test("Bài học 4 - Personal notes", async ({ page }) => {
   const url = "https://material.playwrightvn.com/";
@@ -8,9 +9,8 @@ test("Bài học 4 - Personal notes", async ({ page }) => {
   const titles: string[] = [];
   const descriptions: string[] = [];
 
-  let pom = new PomManager(page);
-  let homePage = pom.getHomePage(url);
-  let personalPage = pom.getPersonalNotePage();
+  let homePage = new HomePage(url, page);
+  let personalPage = new PersonalNotePage(page);
 
   await test.step("Get articles from VNExpress", async () => {
     await page.goto(vnexpressUrl);
@@ -71,5 +71,4 @@ test("Bài học 4 - Personal notes", async ({ page }) => {
     }
     expect(found).toBeTruthy();
   })
-
 });

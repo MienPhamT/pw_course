@@ -1,11 +1,11 @@
 import test, { expect } from "@playwright/test";
-import { PomManager } from "../../../marterial-playwright-pages/pom-manager";
+import { ToDoPage } from "../pages/todo-page";
+import { HomePage } from "../pages/home-page";
 
 test("To-do List", async ({ page }) => {
   const url = "https://material.playwrightvn.com/";
-  let pom = new PomManager(page);
-  let homePage = pom.getHomePage(url);
-  let todoPage = pom.getToDoPage();
+  let homePage = new HomePage(url, page);
+  let todoPage = new ToDoPage(page);
 
   await test.step("Go to Website", async () => {
     await homePage.goToWebsite(url);

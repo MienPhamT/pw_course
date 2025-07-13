@@ -5,7 +5,7 @@ export class MediaPage extends BasePage {
     xpathAddMediaBtn = "//a[@role = 'button' and text() = 'Add Media File']";
     xpathFileInput = 'input[type="file"]';
     xpathDeleteButton = "//button[@class = 'button-link delete-attachment']";
-    filePath = "tests/lesson-05/playwright-exercises/mia.txt";
+    filePath = "tests/lesson-08/return-pom-from-another-pom-exercises/tests/mia.txt";
     xpathMediaMenuItem = "//a/div[text() = 'Media']";
     xpathUploadedFile = "//div[@class='filename']/div[text()='mia.txt']//ancestor::li";
 

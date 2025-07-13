@@ -1,13 +1,12 @@
 import test, { expect } from "@playwright/test";
-import { LoginPage } from "../../../practice-playwrightvn-pages/login-page";
-import { PostPage } from "../../../practice-playwrightvn-pages/post-page";
+import { LoginPage } from "../pages/login-page";
+import { PostPage } from "../pages/post-page";
 
 test.describe("POST - post", async () => {
   let tagNameList: string[] = [];
   let loginPage: LoginPage;
   let postPage: PostPage;
 
-  const url = "https://pw-practice-dev.playwrightvn.com/login";
   const validUsername = "p103-mien";
   const validPassword = "ID9Zz)a0kKq#39LB#8so)(YN";
   const expectErrorBlankTagName = "A name is required for this term.";
@@ -17,8 +16,10 @@ test.describe("POST - post", async () => {
 
   test.beforeEach(async ({ page }) => {
     loginPage = new LoginPage(page);
-    // Sử dụng loginAndGoToPost để trả về PostPage
-    postPage = await loginPage.loginAndGoToPost(validUsername, validPassword);
+    postPage = new PostPage(page);
+
+    await loginPage.goToWebsite();
+    await loginPage.login(validUsername, validPassword);
     await loginPage.navigateToMenuItem(postPage.xpathPostMenu, postPage.xpathTagsSubItem);
 
     page.on("dialog", async (dialog) => {

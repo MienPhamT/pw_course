@@ -1,12 +1,12 @@
 import test, { expect } from "@playwright/test";
-import { PomManager } from "../../../marterial-playwright-pages/pom-manager";
+import { HomePage } from "../pages/home-page";
+import { RegisterPage } from "../pages/register-page";
+import { get } from "http";
 
 test("User Registration", async ({ page }) => {
   let url = "https://material.playwrightvn.com/";
-  let pom = new PomManager(page);
-
-  let registerPage = pom.getRegisterPage();
-  let homePage = pom.getHomePage(url);
+  let registerPage = new RegisterPage(page);
+  let homePage = new HomePage(url, page);
 
   const username = "Mialala";
   const email = "mielele@gmail.com";
