@@ -1,4 +1,10 @@
 import { defineConfig, devices } from "@playwright/test";
+import { config } from "dotenv";
+
+config();
+
+
+
 
 /**
  * Read environment variables from file.
