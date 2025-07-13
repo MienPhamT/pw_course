@@ -1,6 +1,6 @@
 import test, { expect } from "@playwright/test";
-import { HomePage } from "../../../marterial-playwright-pages/home-page";
-import { RegisterPage } from "../../../marterial-playwright-pages/register-page";
+import { HomePage } from "../pages/home-page";
+import { RegisterPage } from "../pages/register-page";
 import { get } from "http";
 
 test("User Registration", async ({ page }) => {

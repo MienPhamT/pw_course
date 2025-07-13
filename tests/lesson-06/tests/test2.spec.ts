@@ -1,6 +1,6 @@
 import test, { expect } from "@playwright/test";
-import { HomePage } from "../../../marterial-playwright-pages/home-page";
-import { ProductPage } from "../../../marterial-playwright-pages/product-page";
+import { HomePage } from "../pages/home-page";
+import { ProductPage } from "../pages/product-page";
 
 test("Product page: Add items to Cart", async ({ page }) => {
   const url = "https://material.playwrightvn.com/";

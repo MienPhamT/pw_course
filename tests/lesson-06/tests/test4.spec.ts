@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { HomePage } from "../../../marterial-playwright-pages/home-page";
-import { PersonalNotePage } from "../../../marterial-playwright-pages/personal-note-page";
+import { HomePage } from "../pages/home-page";
+import { PersonalNotePage } from "../pages/personal-note-page";
 
 test("Bài học 4 - Personal notes", async ({ page }) => {
   const url = "https://material.playwrightvn.com/";

@@ -1,6 +1,6 @@
 import test, { expect } from "@playwright/test";
-import { LoginPage } from "../../../practice-playwrightvn-pages/login-page";
-import { PostPage } from "../../../practice-playwrightvn-pages/post-page";
+import { LoginPage } from "../pages/login-page";
+import { PostPage } from "../pages/post-page";
 
 test.describe("POST - post", async () => {
   let tagNameList: string[] = [];
