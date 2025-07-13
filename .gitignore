@@ -6,5 +6,3 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
-.cursorrules
-.cursorignores
