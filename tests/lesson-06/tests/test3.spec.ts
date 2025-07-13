@@ -1,6 +1,6 @@
 import test, { expect } from "@playwright/test";
-import { ToDoPage } from "../../../marterial-playwright-pages/todo-page";
-import { HomePage } from "../../../marterial-playwright-pages/home-page";
+import { ToDoPage } from "../pages/todo-page";
+import { HomePage } from "../pages/home-page";
 
 test("To-do List", async ({ page }) => {
   const url = "https://material.playwrightvn.com/";

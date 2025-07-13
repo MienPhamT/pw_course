@@ -1,6 +1,6 @@
 import test, { expect } from "@playwright/test";
-import { LoginPage } from "../../../practice-playwrightvn-pages/login-page";
-import { MediaPage } from "../../../practice-playwrightvn-pages/media-page";
+import { LoginPage } from "../pages/login-page";
+import { MediaPage } from "../pages/media-page";
 
 test.describe("MEDIA - media", async () => {
     const validUsername = "p103-mien";
